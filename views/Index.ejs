@@ -9,12 +9,15 @@
   <body>
     <h1><%= pageHeader %></h1>
 
+    <a href="/pokemon/new">Create a pokemon</a>
+
     <ul>
       <% data.map((pokemon, index) => { %>
       <li>
         <%= pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) %>
+        <!-- <img src=<%= `${pokemon.img}.jpg` %> > -->
       </li>
-      <a href="/pokemon/<%= index%>">Link</a>
+      <a href="/pokemon/<%= index%>">Details</a>
       <% }) %>
     </ul>
     s

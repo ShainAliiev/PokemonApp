@@ -8,10 +8,10 @@
   </head>
   <body>
     <h1><%= pageHeader %></h1>
-    <h2><%= pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) %></h2>
-
-    <img src=<%= `${pokemon.img}.jpg` %> >
-
-    <a href="/pokemon">Back</a>
+    <form action="/pokemon" method="POST">
+      <label for="name">Name</label>
+      <input type="text" name="name" />
+      <input type="submit" value="Create Pokemon" />
+    </form>
   </body>
 </html>
