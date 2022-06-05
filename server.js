@@ -8,26 +8,36 @@ const PokemonModel = require('./models/PokemonModel')
 const app = express();
 const PORT = 3000;
 
-app.set("view engine", "ejs");
-app.set("views", "./views");
+app.set("view engine", "ejs"); 
+app.set("views", "./views");  
 
 // =================middleware
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json()); // parse the req into json
+app.use(express.urlencoded({ extended: false })); // parse into javascript
 
 //  ================= Routes
 app.get("/", (req, res) => {
   res.send("Welcome to the Pokemon App!");
 });
 
-app.get("/pokemon", (req, res) => {
+app.get("/pokemon", async (req, res) => {
+
+  try {
   // res.send(pokemon);
-  res.render("Index", {
-    data: pokemon,
-    pageTitle: "Pokemon",
-    pageHeader: "See All The Pokemon!",
-  });
-});
+
+  //==============fetch data from the db
+  const pokemons = await PokemonModel.find();
+ 
+    res.render("Index", {
+      pageTitle: "Pokemon",
+      pageHeader: "See All The Pokemon!",
+      data: pokemons,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+  })
+;
 
 app.get("/pokemon/new", (req, res) => {
   res.render("New", {
@@ -37,28 +47,37 @@ app.get("/pokemon/new", (req, res) => {
 });
 
 app.post("/pokemon", async (req, res) => {
-  const newPokemon = req.body // create a newPokemon variable
+  const newPokemon = req.body; // create a newPokemon variable
   // add a img property to the object
-  newPokemon.img = `http://img.pokemondb.net/artwork/${req.body.name}`
+  newPokemon.img = `http://img.pokemondb.net/artwork/${req.body.name.toLowerCase()}`;
+
   console.log(newPokemon);
 
   // Save the new pokemon to the db
   await PokemonModel.create(newPokemon, (error, result) =>{if (error) {
     console.log(error);
   } 
+  res.redirect('/pokemon')
   console.log(result);
 });
 
 });
 
-app.get("/pokemon/:id", (req, res) => {
+app.get("/pokemon/:id", async (req, res) => {
   // res.send(req.params.id);
-
+try {
+  console.log(req.params.id);
+  const  pokemon = await PokemonModel.findById(req.params.id)
+  console.log('Pokemon found', pokemon);
+  
   res.render("Show", {
     pageTitle: "Details",
     pageHeader: " Gotta catch 'Em All",
-    pokemon: pokemon[req.params.id],
+    data: pokemon,
   });
+} catch (error) {
+  console.log(error);
+}
 });
 
 

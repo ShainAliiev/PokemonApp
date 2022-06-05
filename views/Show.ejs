@@ -8,9 +8,9 @@
   </head>
   <body>
     <h1><%= pageHeader %></h1>
-    <h2><%= pokemon.name.charAt(0).toUpperCase() + pokemon.name.slice(1) %></h2>
+    <h2><%= data.name %></h2>
 
-    <img src=<%= `${pokemon.img}.jpg` %> >
+    <img src=<%= `${data.img}.jpg` %> >
 
     <a href="/pokemon">Back</a>
   </body>
